@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Consulta Técnica Federal – Industria de Eventos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout: banda institucional índigo, formulario en una columna de lectura, partes separadas por cabeceras de color */
+:root{
+  --bg:#F5F5FA; --surface:#FFFFFF; --ink:#1B1A3A; --muted:#5B5A7A; --line:#DADAEA;
+  --indigo:#2F2B84; --brand:#2F2B84; --turq:#00D2D1; --violet:#5244FF; --orange:#FF7A00;
+  --field:#FFFFFF; --soft:#ECECF8; --ok:#1E8E5A; --err:#C2331F;
+  --font:"Montserrat",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111029; --surface:#1B1A3E; --ink:#EDEDFA; --muted:#A9A8CC; --line:#34336A;
+    --brand:#9D98FF; --field:#14133A; --soft:#25245A; --ok:#4FD08F; --err:#FF8A78; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111029; --surface:#1B1A3E; --ink:#EDEDFA; --muted:#A9A8CC; --line:#34336A;
+  --brand:#9D98FF; --field:#14133A; --soft:#25245A; --ok:#4FD08F; --err:#FF8A78; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.55}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--indigo);color:#fff;padding-block:34px 30px;border-bottom:5px solid var(--turq)}
+.kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--turq);margin:0 0 10px}
+h1{font-size:clamp(23px,5vw,32px);line-height:1.18;margin:0 0 12px;font-weight:800;text-wrap:balance}
+.lead{margin:0;max-width:62ch;color:#E3E2FA;font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:18px;font-size:12.5px;color:#C9C7F2}
+.meta b{color:#fff;font-weight:600}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:14px;padding-block:10px}
+.track{flex:1;height:6px;background:var(--soft);border-radius:3px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--turq));transition:width .25s}
+.pct{font-size:12px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums;min-width:8.5ch;text-align:right}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.nav{display:flex;gap:8px;flex-wrap:wrap;padding-block:16px 4px}
+.nav a{font-size:12.5px;font-weight:600;text-decoration:none;color:var(--brand);background:var(--soft);padding:6px 12px;border-radius:99px}
+.nav a:hover,.nav a:focus-visible{outline:2px solid var(--violet)}
+.part{margin-top:34px;padding:14px 18px;border-radius:10px;color:#fff;display:flex;flex-direction:column;gap:2px}
+.part.p1{background:var(--violet)} .part.p2{background:var(--indigo)}
+.part .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;opacity:.85}
+.part h2{margin:0;font-size:19px;font-weight:700}
+section.card{margin-top:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 22px 8px}
+section.card h3{margin:0 0 4px;font-size:17px;font-weight:700;color:var(--brand)}
+section.card .intro{margin:0 0 18px;color:var(--muted);font-size:13.5px;max-width:64ch}
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--orange);color:#1B1A3A;padding:2px 8px;border-radius:4px;margin-left:8px;vertical-align:2px}
+.q{margin:0 0 22px;min-width:0}
+.q[hidden]{display:none}
+.q > label,.q > legend{display:block;font-weight:600;font-size:14.5px;margin-bottom:6px;padding:0}
+fieldset.q{border:0;padding:0;margin:0 0 22px}
+.req{color:var(--orange);margin-left:3px}
+.help{display:block;font-weight:400;font-size:12.5px;color:var(--muted);margin-top:2px}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--field);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px}
+textarea{min-height:88px;resize:vertical}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:none;border-color:var(--violet);box-shadow:0 0 0 3px rgba(82,68,255,.22)}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--field);cursor:pointer;font-size:14px}
+.opt:hover{border-color:var(--violet)}
+.opt input{margin-top:3px;accent-color:var(--violet);flex:none}
+.opt:has(input:checked){border-color:var(--violet);background:var(--soft)}
+.opt:has(input:focus-visible){box-shadow:0 0 0 3px rgba(82,68,255,.22)}
+.ref-row{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:14px;border:1.5px solid var(--line);border-radius:10px;margin-bottom:10px;background:var(--field)}
+.ref-row .wide{grid-column:1 / -1}
+.ref-row.err{border-color:var(--err)}
+.ref-row .del{justify-self:start;padding:6px 12px;font-size:12.5px}
+button.add{margin-top:2px;padding:9px 16px;font-size:13.5px}
+@media (max-width:560px){.ref-row{grid-template-columns:1fr}}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.q.err > label,.q.err > legend{color:var(--err)}
+.q.err input[type=text],.q.err input[type=email],.q.err select{border-color:var(--err)}
+.msg{display:none;font-size:12.5px;color:var(--err);margin-top:5px;font-weight:600}
+.q.err .msg{display:block}
+.send{margin:30px 0 8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+.send p{margin:0 0 14px;color:var(--muted);font-size:13.5px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+button{font:inherit;font-weight:700;border-radius:8px;padding:12px 22px;cursor:pointer;border:2px solid var(--indigo)}
+button.primary{background:var(--indigo);color:#fff}
+button.primary:hover{background:var(--violet);border-color:var(--violet)}
+button.ghost{background:transparent;color:var(--brand);border-color:var(--line)}
+button.ghost:hover{border-color:var(--violet)}
+button:disabled{opacity:.6;cursor:wait}
+button:focus-visible{outline:3px solid var(--turq);outline-offset:2px}
+.status{margin-top:14px;font-size:13.5px;font-weight:600}
+.status.ok{color:var(--ok)} .status.bad{color:var(--err)}
+.thanks{display:none;margin-top:28px;background:var(--surface);border:2px solid var(--turq);border-radius:12px;padding:28px}
+.thanks h2{margin:0 0 8px;color:var(--brand)}
+footer{padding-block:34px 60px;color:var(--muted);font-size:12.5px}
+footer b{color:var(--ink)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.fill{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">AOCA · Consejo Federal de Turismo</p>
+    <h1>Consulta técnica federal para la Mesa Técnica de la Industria de Eventos</h1>
+    <p class="lead">Estamos relevando cómo está organizada la industria de eventos en cada provincia para construir, entre todos, la agenda técnica de la Mesa. Sus respuestas nos ayudan a articular los programas en marcha con las áreas y referentes que ya trabajan en cada territorio.</p>
+    <div class="meta"><span><b>Tiempo estimado:</b> 15 a 20 minutos</span><span><b>Podés dejar preguntas en blanco</b> y completar solo lo que corresponda a su área</span></div>
+  </div>
+</header>
+
+<div class="bar"><div class="wrap"><div class="track" aria-hidden="true"><div class="fill" id="fill"></div></div><span class="pct" id="pct">0 respondidas</span></div></div>
+
+<main class="wrap">
+  <nav class="nav" id="nav" aria-label="Secciones"></nav>
+  <form id="form" novalidate></form>
+
+  <div class="send" id="send">
+    <p>Al enviar, las respuestas llegan a la Dirección Ejecutiva de AOCA y se comparten con los técnicos de la Mesa. Si algo cambia, pueden volver a completar el formulario o responder el mail con el que recibieron este enlace.</p>
+    <div class="btns">
+      <button type="button" class="primary" id="btnSend">Enviar respuestas</button>
+      <button type="button" class="ghost" id="btnCopy">Copiar respuestas como texto</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="thanks" id="thanks" tabindex="-1">
+    <h2>Gracias por su aporte</h2>
+    <p>Recibimos sus respuestas. Nos vamos a poner en contacto con el referente técnico que indicaron para avanzar con la articulación. Si quiere agregar o corregir algo, puede escribirnos respondiendo el mail con el que recibió este enlace.</p>
+    <div class="btns"><button type="button" class="ghost" id="btnCopy2">Copiar una copia de mis respuestas</button></div>
+  </div>
+</main>
+
+<footer><div class="wrap"><b>AOCA</b> · Asociación Argentina de Organizadores y Proveedores de Exposiciones, Congresos, Eventos y Burós de Convenciones. Nucleamos la industria de reuniones.</div></footer>
+
+<script>
+/* ===== CONFIGURACIÓN ===== */
+// Pegar acá la URL de la aplicación web de Apps Script (termina en /exec).
+var ENDPOINT = "https://script.google.com/macros/s/AKfycbzMyI1mOZkXk3RMn3uv2S5dEPPCSp5qlf_Vmkxf99TBZaw-zJzoDt6YiSYAJXuq13nr/exec";
+var VERSION = "2026-10-22";
+
+var PROVINCIAS = ["Buenos Aires","Ciudad Autónoma de Buenos Aires","Catamarca","Chaco","Chubut","Córdoba","Corrientes","Entre Ríos","Formosa","Jujuy","La Pampa","La Rioja","Mendoza","Misiones","Neuquén","Río Negro","Salta","San Juan","San Luis","Santa Cruz","Santa Fe","Santiago del Estero","Tierra del Fuego","Tucumán"];
+
+var SI_NO = ["Sí","En desarrollo","No","No lo sé"];
+
+var SECTIONS = [
+ {part:"p1", partTitle:"Preguntas generales", partKicker:"Parte 1", id:"datos", title:"Quién responde", intro:"Estos datos nos permiten volver a contactarlos y reconocer a cada referente en la Mesa.", qs:[
+  {id:"provincia",label:"Provincia",type:"select",options:PROVINCIAS,req:true},
+  {id:"organismo",label:"Organismo o área desde la que responde",type:"text",req:true,half:true},
+  {id:"nombre",label:"Nombre y apellido",type:"text",req:true,half:true},
+  {id:"cargo",label:"Cargo",type:"text",half:true},
+  {id:"email",label:"Correo electrónico",type:"email",req:true,half:true},
+  {id:"telefono",label:"Teléfono de contacto",type:"tel",half:true}
+ ]},
+ {id:"estructura", title:"Estructura institucional del turismo de reuniones", intro:"Queremos saber quién se ocupa de la industria de eventos en la provincia y con qué marco de trabajo.", qs:[
+  {id:"g_area",label:"¿Quién tiene a cargo la industria de eventos y reuniones en la provincia?",type:"radio",options:["Un área específica de eventos o turismo de reuniones","Una dirección o subsecretaría de turismo, sin área específica de eventos","El ente de promoción turística o el buró de convenciones","Todavía no hay un área definida"]},
+  {id:"g_area_det",label:"Nombre oficial del área o ente",help:"Los referentes técnicos se cargan más abajo, en la sección “Referentes técnicos por tema”.",type:"text"},
+  {id:"g_plan",label:"¿Existe un plan o estrategia provincial de turismo de reuniones o eventos?",type:"radio",options:["Sí, vigente","En elaboración","No"]},
+  {id:"g_plan_det",label:"Nombre del plan o enlace a su documento",type:"text",showIf:{q:"g_plan",in:["Sí, vigente","En elaboración"]}},
+  {id:"g_buro",label:"¿Hay buró de convenciones o ente mixto público-privado en la provincia o en alguna de sus ciudades?",type:"radio",options:["Sí, provincial","Sí, en una o más ciudades","No"]},
+  {id:"g_buro_det",label:"¿Cuáles? (nombre y ciudad)",type:"textarea",showIf:{q:"g_buro",in:["Sí, provincial","Sí, en una o más ciudades"]}}
+ ]},
+ {id:"eventos", title:"Eventos, apoyo y prioridades", intro:"Una mirada general sobre la oferta de sedes, las herramientas de apoyo y lo que la provincia espera de la Mesa.", qs:[
+  {id:"g_sedes",label:"Principales sedes y eventos nacionales o internacionales de la provincia",help:"Centros de convenciones, salones, predios y eventos que se repiten cada año.",type:"textarea"},
+  {id:"g_apoyo",label:"¿Con qué herramientas de apoyo cuenta hoy la provincia para el sector?",type:"checkbox",options:["Apoyo a la captación de eventos (bidding)","Incentivos o financiamiento para organizadores","Capacitación para el sector","Presencia en ferias y acciones de promoción","Ninguna por el momento","Otras"]},
+  {id:"g_prior",label:"¿Qué tres temas debería priorizar la Mesa Técnica desde la mirada de su provincia?",type:"textarea"}
+ ]},
+ {part:"p2", partTitle:"Preguntas específicas", partKicker:"Parte 2", id:"estadistica", title:"Estadística y datos del sector", tag:"AOCA DataBEA", intro:"AOCA DataBEA es el sistema de inteligencia de datos de la industria de eventos de Argentina, construido sobre la base estadística del OETR. Buscamos anclarlo en las áreas de estadística y en los referentes técnicos de cada provincia.", qs:[
+  {id:"e_area",label:"¿Existe un área de estadística vinculada al turismo?",type:"radio",options:["Sí, dentro del área de turismo","Sí, en el organismo provincial de estadística","No por el momento","No lo sé"]},
+  {id:"e_mide",label:"¿Qué se releva hoy sobre eventos, reuniones o congresos?",type:"checkbox",options:["Cantidad de eventos","Cantidad de asistentes","Impacto económico","Ocupación hotelera asociada","Perfil de sedes y organizadores","Nada específico por el momento"]},
+  {id:"e_frec",label:"¿Con qué frecuencia se actualizan esos datos?",type:"radio",options:["Mensual","Trimestral","Anual","Eventual","No se relevan"]},
+  {id:"e_fuentes",label:"Fuentes, metodología y sistemas con los que ya trabajan",help:"Por ejemplo OETR, registros propios, encuestas, datos de ocupación.",type:"textarea"},
+  {id:"e_comparte",label:"¿Estarían dispuestos a compartir datos agregados con AOCA DataBEA?",type:"radio",options:["Sí, mediante un acuerdo específico","Sí, de manera informal","Necesitamos más información","No por el momento"]}
+ ]},
+ {id:"sostenibilidad", title:"Sostenibilidad en la industria de eventos", tag:"AOCA Impacto 360", intro:"AOCA Impacto 360 es el programa de sostenibilidad de la industria de eventos. Queremos ver con qué iniciativas provinciales puede articularse.", qs:[
+  {id:"s_prog",label:"¿Existe un programa provincial de sostenibilidad vinculado al turismo?",type:"radio",options:SI_NO},
+  {id:"s_eventos",label:"¿Ese programa alcanza a la industria de eventos?",type:"radio",options:["Sí, hay uno específico para eventos","Sí, uno general de turismo que también alcanza a eventos","No"]},
+  {id:"s_cert",label:"¿Qué certificaciones o normas se utilizan en la provincia?",type:"checkbox",options:["GSTC","Normas IRAM o ISO","Sello o distintivo provincial","Medición de huella de carbono","Ninguna","Otras"]},
+  {id:"s_temas",label:"¿Qué temas de sostenibilidad son prioritarios para eventos en su provincia?",type:"checkbox",options:["Gestión de residuos (GIRSU)","Energía y huella de carbono","Accesibilidad e inclusión","Compras responsables y proveedores locales","Gobernanza y medición de resultados"]},
+  {id:"s_art",label:"¿Les interesaría articular su programa con AOCA Impacto 360?",type:"radio",options:["Sí","Quizás, necesitamos más información","No por el momento"]}
+ ]},
+ {id:"normativa", title:"Normativa y registros", intro:"Información para la propuesta federal de marco normativo y para el registro de proveedores de la industria.", qs:[
+  {id:"n_norma",label:"¿Hay normativa provincial específica sobre eventos o turismo de reuniones? (ley, decreto, resolución)",type:"radio",options:["Sí","En elaboración","No"]},
+  {id:"n_norma_det",label:"Número y título de la norma, o enlace",type:"text",showIf:{q:"n_norma",in:["Sí","En elaboración"]}},
+  {id:"n_registro",label:"¿Existe un registro provincial de prestadores y proveedores de servicios para eventos?",type:"radio",options:SI_NO},
+  {id:"n_organismo",label:"¿Qué organismos habilitan sedes y eventos en la provincia?",type:"textarea"},
+  {id:"n_comun",label:"¿Les resultaría útil contar con criterios comunes entre provincias (registro, estadística, sostenibilidad)?",type:"radio",options:["Muy útil","Útil","Con reservas"]},
+  {id:"n_com",label:"Comentarios o reservas",type:"textarea"}
+ ]},
+ {id:"referentes", title:"Referentes técnicos por tema", tag:"Para la Mesa", intro:"Cada tema de la Mesa puede tener su propio referente: estadística, sostenibilidad, normativa, capacitación o quien represente a la provincia en las reuniones. Pueden cargar todos los que quieran. Si una misma persona cubre varios temas, cárguenla una vez por cada tema.", qs:[
+  {id:"referentes",label:"Referentes de la provincia",help:"Nombre, cargo, correo y teléfono de cada referente.",type:"ref"}
+ ]},
+ {id:"articulacion", title:"Capacitación y cierre", intro:"Para cerrar, nos interesa saber en qué pueden colaborar.", qs:[
+  {id:"c_temas",label:"¿Qué temas de capacitación les interesan para el sector?",type:"checkbox",options:["Gestión y producción de eventos","Captación de eventos y bidding","Sostenibilidad","Datos y medición","Fortalecimiento de burós y entes locales"]},
+  {id:"c_otros",label:"Otras consultas, documentos o enlaces que quieran compartir",type:"textarea"},
+  {id:"c_ok",label:"Autorizo a AOCA y a la Mesa Técnica a usar esta información para el trabajo de la Mesa.",type:"consent",req:true}
+ ]}
+];
+
+/* ===== RENDER ===== */
+var form = document.getElementById("form");
+var nav = document.getElementById("nav");
+var allQs = [];
+
+function el(tag, attrs, kids){
+  var n = document.createElement(tag);
+  if (attrs) Object.keys(attrs).forEach(function(k){
+    if (k === "text") n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]);
+  });
+  (kids||[]).forEach(function(c){ n.appendChild(c); });
+  return n;
+}
+
+var REF_TEMAS = ["Turismo y eventos (área general)","Estadística y datos (DataBEA)","Sostenibilidad (Impacto 360)","Normativa y registros","Capacitación","Representante en la Mesa Técnica","Otro"];
+var REF_FIELDS = [["nombre","Nombre y apellido","text"],["cargo","Cargo","text"],["correo","Correo electrónico","email"],["telefono","Teléfono","tel"]];
+
+function addRefRow(box, d){
+  d = d || {};
+  var row = el("div", {"class":"ref-row"});
+  var sel = el("select", {"class":"wide", "data-k":"tema", "aria-label":"Tema del referente"});
+  sel.appendChild(el("option", {value:"", text:"Tema que cubre"}));
+  REF_TEMAS.forEach(function(t){ sel.appendChild(el("option", {value:t, text:t})); });
+  sel.value = d.tema || "";
+  row.appendChild(sel);
+  REF_FIELDS.forEach(function(f){
+    var inp = el("input", {type:f[2], "data-k":f[0], placeholder:f[1], "aria-label":f[1], autocomplete:"off"});
+    inp.value = d[f[0]] || "";
+    row.appendChild(inp);
+  });
+  var del = el("button", {type:"button", "class":"ghost del", text:"Quitar referente"});
+  del.addEventListener("click", function(){ box.removeChild(row); onChange(); });
+  row.appendChild(del);
+  box.appendChild(row);
+}
+
+function buildRef(q){
+  var wrap = el("fieldset", {"class":"q", "data-q":q.id});
+  var lg = el("legend", {text:q.label});
+  if (q.help) lg.appendChild(el("span", {"class":"help", text:q.help}));
+  wrap.appendChild(lg);
+  var box = el("div", {"class":"refs"});
+  addRefRow(box);
+  wrap.appendChild(box);
+  var add = el("button", {type:"button", "class":"ghost add", text:"Agregar otro referente"});
+  add.addEventListener("click", function(){ addRefRow(box); });
+  wrap.appendChild(add);
+  wrap.appendChild(el("div", {"class":"msg", text:"Cada referente necesita nombre y un correo o teléfono."}));
+  return wrap;
+}
+
+function buildQuestion(q){
+  if (q.type === "ref") return buildRef(q);
+  var wrap, input;
+  var isGroup = q.type === "radio" || q.type === "checkbox" || q.type === "consent";
+  if (isGroup){
+    wrap = el("fieldset", {"class":"q", "data-q":q.id});
+    var lg = el("legend", {text:q.label});
+    if (q.req) lg.appendChild(el("span", {"class":"req", text:"*"}));
+    if (q.help) lg.appendChild(el("span", {"class":"help", text:q.help}));
+    wrap.appendChild(lg);
+    var box = el("div", {"class":"opts"});
+    var opts = q.type === "consent" ? ["Sí, estoy de acuerdo"] : q.options;
+    opts.forEach(function(o, i){
+      var id = q.id + "_" + i;
+      var inp = el("input", {type: q.type === "radio" ? "radio" : "checkbox", name:q.id, id:id, value:o});
+      var lab = el("label", {"class":"opt", "for":id}, [inp, el("span", {text:o})]);
+      box.appendChild(lab);
+    });
+    wrap.appendChild(box);
+  } else {
+    wrap = el("div", {"class":"q", "data-q":q.id});
+    var lb = el("label", {"for":q.id, text:q.label});
+    if (q.req) lb.appendChild(el("span", {"class":"req", text:"*"}));
+    if (q.help) lb.appendChild(el("span", {"class":"help", text:q.help}));
+    wrap.appendChild(lb);
+    if (q.type === "select"){
+      input = el("select", {id:q.id, name:q.id});
+      input.appendChild(el("option", {value:"", text:"Seleccionar"}));
+      q.options.forEach(function(o){ input.appendChild(el("option", {value:o, text:o})); });
+    } else if (q.type === "textarea"){
+      input = el("textarea", {id:q.id, name:q.id});
+    } else {
+      input = el("input", {type:q.type, id:q.id, name:q.id, autocomplete: q.type==="email"?"email":"off"});
+    }
+    wrap.appendChild(input);
+  }
+  wrap.appendChild(el("div", {"class":"msg", text:"Este dato es necesario para enviar."}));
+  return wrap;
+}
+
+SECTIONS.forEach(function(s){
+  if (s.partTitle){
+    form.appendChild(el("div", {"class":"part "+s.part}, [
+      el("span", {"class":"k", text:s.partKicker}),
+      el("h2", {text:s.partTitle})
+    ]));
+  }
+  var card = el("section", {"class":"card", id:"sec-"+s.id});
+  var h = el("h3", {text:s.title});
+  if (s.tag) h.appendChild(el("span", {"class":"tag", text:s.tag}));
+  card.appendChild(h);
+  if (s.intro) card.appendChild(el("p", {"class":"intro", text:s.intro}));
+  var gridOpen = null;
+  s.qs.forEach(function(q){
+    var node = buildQuestion(q);
+    allQs.push(q);
+    if (q.half){
+      if (!gridOpen){ gridOpen = el("div", {"class":"grid2"}); card.appendChild(gridOpen); }
+      gridOpen.appendChild(node);
+    } else { gridOpen = null; card.appendChild(node); }
+    if (q.showIf) node.hidden = true;
+  });
+  form.appendChild(card);
+  nav.appendChild(el("a", {href:"#sec-"+s.id, text:s.title}));
+});
+
+/* ===== VALORES ===== */
+function valueOf(q){
+  var node = form.querySelector('[data-q="'+q.id+'"]');
+  if (q.type === "ref"){
+    var rows = [];
+    node.querySelectorAll(".ref-row").forEach(function(row){
+      var o = {};
+      row.querySelectorAll("[data-k]").forEach(function(f){ o[f.getAttribute("data-k")] = f.value.trim(); });
+      if (o.nombre || o.cargo || o.correo || o.telefono) rows.push(o);
+    });
+    return rows;
+  }
+  if (q.type === "checkbox"){
+    return Array.prototype.map.call(node.querySelectorAll("input:checked"), function(i){return i.value;});
+  }
+  if (q.type === "radio" || q.type === "consent"){
+    var c = node.querySelector("input:checked"); return c ? c.value : "";
+  }
+  return node.querySelector("input,select,textarea").value.trim();
+}
+function isEmpty(v){ return Array.isArray(v) ? v.length === 0 : v === ""; }
+
+function updateConditions(){
+  allQs.forEach(function(q){
+    if (!q.showIf) return;
+    var node = form.querySelector('[data-q="'+q.id+'"]');
+    var dep = allQs.filter(function(x){return x.id === q.showIf.q;})[0];
+    var show = q.showIf.in.indexOf(valueOf(dep)) !== -1;
+    node.hidden = !show;
+  });
+}
+
+function updateProgress(){
+  var total = 0, done = 0;
+  allQs.forEach(function(q){
+    var node = form.querySelector('[data-q="'+q.id+'"]');
+    if (node.hidden) return;
+    total++;
+    if (!isEmpty(valueOf(q))) done++;
+  });
+  document.getElementById("fill").style.width = (total ? Math.round(done/total*100) : 0) + "%";
+  document.getElementById("pct").textContent = done + " de " + total;
+}
+
+/* ===== BORRADOR LOCAL ===== */
+var KEY = "aoca_consulta_cft_borrador";
+function saveDraft(){
+  try {
+    var d = {}; allQs.forEach(function(q){ d[q.id] = valueOf(q); });
+    localStorage.setItem(KEY, JSON.stringify(d));
+  } catch(e){}
+}
+function loadDraft(){
+  try {
+    var d = JSON.parse(localStorage.getItem(KEY) || "null"); if (!d) return;
+    allQs.forEach(function(q){
+      var node = form.querySelector('[data-q="'+q.id+'"]'), v = d[q.id];
+      if (v === undefined) return;
+      if (q.type === "ref"){
+        var rb = node.querySelector(".refs"); rb.innerHTML = "";
+        if (!v.length) v = [{}];
+        v.forEach(function(x){ addRefRow(rb, x); });
+        return;
+      }
+      if (q.type === "checkbox"){
+        node.querySelectorAll("input").forEach(function(i){ i.checked = v.indexOf(i.value) !== -1; });
+      } else if (q.type === "radio" || q.type === "consent"){
+        node.querySelectorAll("input").forEach(function(i){ i.checked = (i.value === v); });
+      } else { node.querySelector("input,select,textarea").value = v; }
+    });
+  } catch(e){}
+}
+function onChange(){ updateConditions(); updateProgress(); saveDraft(); }
+form.addEventListener("input", onChange);
+form.addEventListener("change", onChange);
+loadDraft(); updateConditions(); updateProgress();
+
+/* ===== ENVÍO ===== */
+function collect(){
+  var r = {};
+  allQs.forEach(function(q){
+    var node = form.querySelector('[data-q="'+q.id+'"]');
+    if (node.hidden) return;
+    var v = valueOf(q);
+    if (!isEmpty(v)) r[q.id] = v;
+  });
+  return r;
+}
+function asText(r){
+  var out = ["CONSULTA TÉCNICA FEDERAL – MESA TÉCNICA DE LA INDUSTRIA DE EVENTOS (CFT)", "Provincia: " + (r.provincia||""), ""];
+  SECTIONS.forEach(function(s){
+    var lines = [];
+    s.qs.forEach(function(q){
+      var v = r[q.id]; if (v === undefined) return;
+      var txt;
+      if (q.type === "ref"){
+        txt = v.map(function(x){
+          return (x.tema || "Sin tema") + ": " + [x.nombre, x.cargo, x.correo, x.telefono].filter(Boolean).join(" | ");
+        }).join("\n  ");
+      } else { txt = Array.isArray(v) ? v.join("; ") : v; }
+      lines.push("- " + q.label + "\n  " + txt);
+    });
+    if (lines.length){ out.push("== " + s.title.toUpperCase() + (s.tag ? " (" + s.tag + ")" : "") + " =="); out = out.concat(lines); out.push(""); }
+  });
+  return out.join("\n");
+}
+function validate(){
+  var ok = true, first = null;
+  allQs.forEach(function(q){
+    var node = form.querySelector('[data-q="'+q.id+'"]');
+    node.classList.remove("err");
+    if (q.type === "ref"){
+      var badRef = false;
+      node.querySelectorAll(".ref-row").forEach(function(row){
+        row.classList.remove("err");
+        var o = {};
+        row.querySelectorAll("[data-k]").forEach(function(f){ o[f.getAttribute("data-k")] = f.value.trim(); });
+        var any = o.nombre || o.cargo || o.correo || o.telefono;
+        var emailBad = o.correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(o.correo);
+        if (any && (!o.nombre || !(o.correo || o.telefono) || emailBad)){ row.classList.add("err"); badRef = true; }
+      });
+      if (badRef){ node.classList.add("err"); ok = false; if (!first) first = node; }
+      return;
+    }
+    if (!q.req || node.hidden) return;
+    var v = valueOf(q), bad = isEmpty(v);
+    if (!bad && q.type === "email") bad = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    if (bad){ node.classList.add("err"); ok = false; if (!first) first = node; }
+  });
+  if (first) first.scrollIntoView({behavior:"smooth", block:"center"});
+  return ok;
+}
+function setStatus(msg, cls){
+  var s = document.getElementById("status"); s.textContent = msg; s.className = "status " + (cls||"");
+}
+function copyText(txt, okMsg){
+  var done = function(){ setStatus(okMsg, "ok"); };
+  var fallback = function(){
+    var ta = document.createElement("textarea"); ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch(e){ setStatus("No se pudo copiar automáticamente. Seleccione y copie el texto manualmente.", "bad"); }
+    document.body.removeChild(ta);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else fallback();
+}
+document.getElementById("btnCopy").addEventListener("click", function(){
+  copyText(asText(collect()), "Respuestas copiadas. Puede pegarlas en un correo a direccionejecutiva@aoca.org.ar.");
+});
+document.getElementById("btnCopy2").addEventListener("click", function(){
+  copyText(asText(collect()), "Copia lista para pegar.");
+});
+document.getElementById("btnSend").addEventListener("click", function(){
+  var btn = this;
+  if (!validate()){ setStatus("Faltan datos obligatorios, marcados en rojo.", "bad"); return; }
+  var r = collect();
+  if (!ENDPOINT){
+    setStatus("El envío automático todavía no está configurado en esta versión. Use “Copiar respuestas como texto” y pegue las respuestas en un correo.", "bad");
+    return;
+  }
+  btn.disabled = true; setStatus("Enviando…");
+  fetch(ENDPOINT, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify({version:VERSION, enviado:new Date().toISOString(), respuestas:r, texto:asText(r)})})
+  .then(function(){
+    try { localStorage.removeItem(KEY); } catch(e){}
+    document.getElementById("send").style.display = "none";
+    form.style.display = "none"; nav.style.display = "none";
+    var t = document.getElementById("thanks"); t.style.display = "block"; t.focus();
+    window.scrollTo({top:0});
+  })
+  .catch(function(){
+    btn.disabled = false;
+    setStatus("No pudimos enviar las respuestas. Revise su conexión e intente de nuevo, o use “Copiar respuestas como texto”.", "bad");
+  });
+});
+</script>
+</body>
+</html>
